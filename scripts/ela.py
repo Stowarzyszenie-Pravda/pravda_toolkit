@@ -32,4 +32,4 @@ def ela(image_path, image_quality = 95):
     ela_image.save(ela_image_path)
 
 if __name__ == '__main__':
-    ela("../images/test.jpg")
+    ela("../database/images/test.jpg")
