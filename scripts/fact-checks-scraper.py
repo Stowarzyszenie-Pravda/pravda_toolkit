@@ -139,6 +139,9 @@ def scrape_fakenews():
     return pd.DataFrame(data, columns=['url', 'title', 'verdict', 'date'])
 
 if __name__ == '__main__':
+    fakenews = scrape_fakenews()
+    fakenews.to_csv('../database/fact-checks/fakenews.pl/'+generate_timestamp()+'.csv')
+
     demagog = scrape_demagog()
     demagog.to_csv('../database/fact-checks/demagog.org.pl/'+generate_timestamp()+'.csv')
 
