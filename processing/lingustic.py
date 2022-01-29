@@ -1,4 +1,3 @@
-import spacy
 import re
 
 def count_capital_letters(doc) -> int:
