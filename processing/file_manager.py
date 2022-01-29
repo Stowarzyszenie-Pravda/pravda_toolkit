@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-def merge_files(path: str) :
+def merge_files(path: str):
     for subdir, dirs, files in os.walk(path):
         for e, file in enumerate(files):
             #print os.path.join(subdir, file)
