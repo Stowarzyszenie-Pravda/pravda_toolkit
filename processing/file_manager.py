@@ -1,3 +1,4 @@
+from heapq import merge
 import os
 import pandas as pd
 
@@ -15,6 +16,9 @@ def merge_files(path: str, drop_duplicates_by: str = None) -> pd.DataFrame:
         for e, file in enumerate(files):
             #print os.path.join(subdir, file)
             filepath = subdir + os.sep + file
+            
+            if 'processed' in filepath or 'gephi' in filepath:
+                continue
 
             if filepath.endswith(".csv"):
                 filepath = str(filepath).replace(' \ '.strip(),'/')

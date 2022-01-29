@@ -84,43 +84,71 @@ def percent_of_complex_nouns(doc):
     """
     Takes spaCy document and returns percent of complex nouns. 
     """
-    return len(filter(is_complex, words_from_pos(doc, "NOUN")))/count_words(doc)*100
+    try:
+        percent = len(list(filter(is_complex, words_from_pos(doc, "NOUN"))))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def percent_of_nouns(doc):
     """
     Takes spaCy document and returns percent of nouns. 
     """
-    return len(words_from_pos(doc, "NOUN"))/count_words(doc)*100
+    try:
+        percent = len(words_from_pos(doc, "NOUN"))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def percent_of_complex_verbs(doc):
     """
     Takes spaCy document and returns percent of complex verbs. 
     """
-    return len(filter(is_complex, words_from_pos(doc, "VERB")))/count_words(doc)*100
+    try:
+        percent = len(list(filter(is_complex, words_from_pos(doc, "VERB"))))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def percent_of_verbs(doc):
     """
     Takes spaCy document and returns percent of verbs. 
     """
-    return len(words_from_pos(doc, "VERB"))/count_words(doc)*100
+    try:
+        percent = len(words_from_pos(doc, "VERB"))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def percent_of_complex_adjectives(doc):
     """
     Takes spaCy document and returns percent of complex adjectives. 
     """
-    return len(filter(is_complex, words_from_pos(doc, "ADJ")))/count_words(doc)*100
+    try:
+        percent = len(list(filter(is_complex, words_from_pos(doc, "ADJ"))))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def percent_of_adjectives(doc):
     """
     Takes spaCy document and returns percent of adjectives. 
     """
-    return len(words_from_pos(doc, "ADJ"))/count_words(doc)*100
+    try:
+        percent = len(words_from_pos(doc, "ADJ"))/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def noun_to_verb_ratio(doc):
     """
     Takes spaCy document and returns noun to verb ratio.
     """
-    return percent_of_nouns(doc)/percent_of_verbs(doc)
+    try:
+        ratio = percent_of_nouns(doc)/percent_of_verbs(doc)
+    except ZeroDivisionError:
+        return -1
+    return ratio
 
 def count_words(doc):
     """
@@ -148,7 +176,11 @@ def percent_of_complex_words(doc):
     """
     Takes spaCy document and returns percent of complex words. 
     """
-    return count_complex_words(doc)/count_words(doc)*100
+    try:
+        percent = count_complex_words(doc)/count_words(doc)*100
+    except ZeroDivisionError:
+        return -1
+    return percent
 
 def sentences_from_doc(doc):
     """
@@ -166,21 +198,33 @@ def average_sentence_length(doc):
     """
     Takes spaCy doc and returns average sentence length.
     """
-    return sum(len(sentence) for sentence in sentences_from_doc(doc))/count_sentences(doc)
+    try:
+        average_sentence_length = sum(len(sentence) for sentence in sentences_from_doc(doc))/count_sentences(doc)
+    except ZeroDivisionError:
+        return -1
+    return average_sentence_length
 
 def fog_index(doc):
     """
     Takes spaCy document and returns FOG readability index. The FOG index is can be used to confirm that text can be read easily by the intended audience.
     """
-    return 0.4 * (count_words(doc) / count_sentences(doc) + 100 * count_complex_words(doc) / count_words(doc))     
+    try:
+        fog_index = 0.4 * (count_words(doc) / count_sentences(doc) + 100 * count_complex_words(doc) / count_words(doc))
+    except ZeroDivisionError:
+        return -1     
+    return fog_index
 
 def pisarek_index(doc, linear = False):
     """
     Takes spaCy document and returns Pisarek's index.
     """
-    if linear == True:
-        return 1 / 3 * count_words(doc) / count_sentences(doc) + 1 / 3 * 100 * count_complex_words(doc) / count_words(doc) + 1
-    # If is non-linear
-    else:
-        return 1 / 2 *  ((count_words(doc) / count_sentences(doc)) ** 2 + (100 * count_complex_words(doc) / count_words(doc)) ** 2)**(1/2)
-
+    try:
+        if linear == True:
+            pisarek_index = 1 / 3 * count_words(doc) / count_sentences(doc) + 1 / 3 * 100 * count_complex_words(doc) / count_words(doc) + 1
+            return 
+        # If is non-linear
+        else:
+            pisarek_index =  1 / 2 *  ((count_words(doc) / count_sentences(doc)) ** 2 + (100 * count_complex_words(doc) / count_words(doc)) ** 2)**(1/2)
+    except ZeroDivisionError:
+        return -1
+    return pisarek_index

@@ -4,7 +4,7 @@ def to_lowercase(text):
     return text.lower()
 
 # TODO put in file below to be able to choose
-pl_stopwords = set(open("src/polish_stopwords.txt", encoding="utf-8", mode='r').read().split("\n"))
+pl_stopwords = set(open("../src/polish_stopwords.txt", encoding="utf-8", mode='r').read().split("\n"))
 def remove_stopwords(text, stopwords = pl_stopwords):
     return ' '.join([word for word in text.split(" ") if word not in stopwords])
 
