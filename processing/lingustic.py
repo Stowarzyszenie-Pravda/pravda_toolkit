@@ -228,3 +228,8 @@ def pisarek_index(doc, linear = False):
     except ZeroDivisionError:
         return -1
     return pisarek_index
+
+def check_if_has_badword(doc):
+    with open('../src/polish_badwords.txt', 'r', encoding = "utf-8") as file:
+        badwords_list = file.read().replace('\n', '.').split(".")
+    return len([word for word in words_from_doc(doc) if word.lower() in badwords_list]) > 0

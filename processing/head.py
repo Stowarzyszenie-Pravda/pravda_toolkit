@@ -50,7 +50,8 @@ if __name__ == '__main__':
             df['lg_average_sentence_length'] = [lg.average_sentence_length(doc) for doc in docs]
             df['lg_fog_index'] = [lg.fog_index(doc) for doc in docs]
             df['lg_pisarek_index'] = [lg.pisarek_index(doc) for doc in docs]
-            
+            df['lg_contains_badword'] = [lg.check_if_has_badword(doc) for doc in docs]
+
             # Adding purified (meaning adding another layer of text cleaning with removal of some informantion and) text column
             df['purified_tweet'] = df['cleaned_tweet'].apply(lambda tweet: tc.remove_duplicated_spaces(tc.remove_stopwords(tc.remove_punctuation(tc.remove_numbers(tc.remove_n_length_words(tc.to_lowercase(tweet)))))))
 
