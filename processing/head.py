@@ -8,16 +8,36 @@ import os
 
 import spacy
 
+from joblib import Parallel, delayed
+
+def chunker(iterable, total_length, chunksize):
+    return (iterable[pos: pos + chunksize] for pos in range(0, total_length, chunksize))
+
+
+def flatten(list_of_lists):
+    "Flatten a list of lists to a combined list"
+    return [item for sublist in list_of_lists for item in sublist]
+
+def preprocess_parallel(texts, chunksize=100):
+    executor = Parallel(n_jobs=7, backend='multiprocessing', prefer="processes")
+    do = delayed(nlp.pipe(texts, batch_size=20))
+    tasks = (do(chunk) for chunk in chunker(texts, len(df_preproc), chunksize=chunksize))
+    result = executor(tasks)
+    return flatten(result)
+
 TWITTER_SCRAPED_DATA_PATH = "../data/twitter-scraped-data/"
 
 # Purpose of this file to push in processed data to specific folders and enriching it with lingustic features
 if __name__ == '__main__':
 
-
     nlp = spacy.load("pl_core_news_lg")
     for subdir, dirs, files in os.walk(TWITTER_SCRAPED_DATA_PATH):
+        if 'exc' in str(subdir):
+            break
+
         for e, dir in enumerate(dirs):
             dirpath = TWITTER_SCRAPED_DATA_PATH + dir
+            print(dirpath)
             df = merge_files(dirpath, drop_duplicates_by='id').drop("Unnamed: 0", axis = 1)
 
             # Generating Gephi DataFrame
@@ -31,7 +51,7 @@ if __name__ == '__main__':
             df['cleaned_tweet'] = df['tweet'].apply(lambda tweet: tc.remove_duplicated_spaces(tc.remove_mentions(tc.remove_emojis(tc.remove_hashtags(tc.remove_urls(tweet))))))
 
             # Apply spaCy document on all cleaned tweets
-            docs = list(nlp.pipe(df['cleaned_tweet']))
+            docs = preprocess_parallel(df['cleaned_tweet'])
 
             # Adding lingustic features
             df['lg_number_of_capital_letters'] = [lg.count_capital_letters(doc) for doc in docs]
