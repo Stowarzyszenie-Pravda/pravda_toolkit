@@ -14,3 +14,7 @@ def generate_edge_list(df):
         for user in change_reply_to_user_list(row["reply_to"]):
             graph_list.append([row["username"],user])
     return pd.DataFrame(graph_list, columns=['source', 'target'])
+
+
+def hydrate(df):
+    pass
